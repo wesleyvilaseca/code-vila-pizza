@@ -20,10 +20,10 @@ export function Header() {
                 </Link>
 
                 <nav className={styles.menuNav}>
-                    <Link href='/category' className={styles.links}>
+                    <Link href='/admin/category' className={styles.links}>
                         Categorias
                     </Link>
-                    <Link href='/products' className={styles.links}>
+                    <Link href='/admin/products' className={styles.links}>
                         Produtos
                     </Link>
 

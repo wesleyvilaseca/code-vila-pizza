@@ -9,9 +9,8 @@ import Link from 'next/link';
 
 import { AuthContext } from '@/contexts/AuthContext';
 
-export default function AuthScreem() {
+const AuthScreem = () => {
   const { signIn } = useContext(AuthContext);
-
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
   const[loading, setLoading] = useState(false);
@@ -71,3 +70,5 @@ export default function AuthScreem() {
     </>
   )
 }
+
+export default AuthScreem;

@@ -4,7 +4,8 @@ import { api } from "@/services/apiClient";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { destroyCookie, setCookie } from "nookies";
 import { createContext, ReactNode, useState } from "react";
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { toast } from "react-toastify";
 
 type AuthContextData = {
     user: UserProps,
@@ -65,6 +66,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
             //set token on next requests
             api.defaults.headers['Authorization'] = `Bearer ${token}`;
+            toast.success('Logado com sucesso');
         } catch (error) {
             throw error;
         }
@@ -75,6 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         try {
             const res = await api.post('/users', { name, email, password});
             router.push('/');
+            toast.success('Cadastro realizado com sucesso!');
         } catch(error) {
             throw error;
         }

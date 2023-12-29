@@ -2,12 +2,30 @@
 
 import { Header } from "@/components/Header";
 import styles from './style.module.scss';
-import { useState } from "react";
+import { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
+import { api } from "@/services/apiClient";
+import { useRouter } from 'next/navigation';
 
 export function CategoriesScreem() {
     const [name, setName] = useState('');
+    const route = useRouter();
 
-    async function handleRegister() {
+    async function handleRegister(event: FormEvent) {
+        event.preventDefault();
+
+        if(name === '') {
+            toast.error('Nome é um campo obrigatório');
+            return;
+        }
+
+        await api.post('/category', {name: name})
+        .then(() => {
+            toast.success('Categoria cadastrada com sucesso');
+        })
+        .catch(() => {
+            toast.error('Falha na operação, tente novamente');
+        });
 
     }
 

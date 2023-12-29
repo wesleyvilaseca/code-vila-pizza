@@ -23,7 +23,7 @@ export function Header() {
                     <Link href='/admin/category' className={styles.links}>
                         Categorias
                     </Link>
-                    <Link href='/admin/products' className={styles.links}>
+                    <Link href='/admin/product' className={styles.links}>
                         Produtos
                     </Link>
 

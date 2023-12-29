@@ -6,11 +6,19 @@ import styles from '../../../styles/home.module.scss';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/Button';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { AuthContext } from '@/contexts/AuthContext';
 
 const AuthScreem = () => {
-  const { signIn } = useContext(AuthContext);
+  const router = useRouter();
+
+  const { signIn, isAuthenticated } = useContext(AuthContext);
+  
+  if(isAuthenticated) {
+    return router.push('/admin/dashboard');
+  }
+
   const[email, setEmail] = useState('');
   const[password, setPassword] = useState('');
   const[loading, setLoading] = useState(false);

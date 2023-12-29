@@ -2,8 +2,8 @@
 
 import { api } from "@/services/apiClient";
 import { isRedirectError } from "next/dist/client/components/redirect";
-import { destroyCookie, setCookie } from "nookies";
-import { createContext, ReactNode, useState } from "react";
+import { destroyCookie, parseCookies, setCookie } from "nookies";
+import { createContext, ReactNode, useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 
@@ -45,6 +45,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>();
 
     const isAuthenticated = !!user;
+
+    useEffect(() => {
+        const { '@nextauth.token': token } = parseCookies();
+        if(token) {
+            api.get('/me')
+            .then((res) => {
+                const {id, name, email} = res.data;
+
+                setUser({
+                    id, name, email
+                })
+            })
+            .catch(() => {
+                signOut();
+            })
+        }
+    }, []);
 
     async function signIn({email, password}: SignInProps) {
         try {
@@ -90,7 +107,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 export function signOut() {
     try {
-        destroyCookie(undefined, '@nextauth.tokent');
+        destroyCookie(undefined, '@nextauth.token', {
+            path: '/'
+        });
     } catch (error) {
         if(isRedirectError(error)) {
             throw error;

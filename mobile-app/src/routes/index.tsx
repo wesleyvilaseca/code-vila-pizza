@@ -1,10 +1,11 @@
 import { ActivityIndicator, View } from "react-native";
 import AppRoutes from "./app.routes";
 import AuthRoutes from "./auth.routes";
+import { useContext } from "react";
+import { AuthContext } from "../cotexts/AuthContext";
 
 function Routes () {
-    const isAuth = false;
-    const loading = false;
+    const { isAuthenticated, loading } = useContext(AuthContext);
 
     if(loading) {
         return(
@@ -22,7 +23,7 @@ function Routes () {
     }
 
     return(
-        isAuth ? <AppRoutes /> : <AuthRoutes />
+        isAuthenticated ? <AppRoutes /> : <AuthRoutes />
     )
 }
 

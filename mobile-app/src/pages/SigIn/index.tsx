@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { 
     TouchableWithoutFeedback, 
     KeyboardAvoidingView, 
@@ -9,17 +9,22 @@ import {
     TextInput, 
     TouchableOpacity, 
     Platform,
-    Keyboard
+    Keyboard,
+    ActivityIndicator
 } from "react-native";
+import { AuthContext } from "../../cotexts/AuthContext";
 
 export default function SigIn() {
+    const { signIn, loading } = useContext(AuthContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
+    const handleLogin = async () => {
         if(email == '' || password == '') {
             return;
         }
+
+        await signIn({email, password});
     }
 
     const dismissKeyboard = () => {
@@ -43,19 +48,25 @@ export default function SigIn() {
                         placeholder="Digite seu email"
                         style={styles.input}
                         placeholderTextColor="#f0f0f0"
+                        keyboardType="email-address"
                         value={email}
-                        onChangeText={setEmail}
+                        onChangeText={(text) => setEmail(text)}
                     />
                     <TextInput 
                         placeholder="Digite sua senha"
                         style={styles.input}
                         placeholderTextColor="#f0f0f0"
                         value={password}
-                        onChangeText={setPassword}
+                        onChangeText={(text) => setPassword(text)}
+                        secureTextEntry={true} 
                     />
 
                     <TouchableOpacity style={styles.button} onPress={handleLogin}>
-                        <Text style={styles.buttonText}>Acessar</Text>
+                        {loading ? (
+                            <ActivityIndicator size={25} color="#FFF" />
+                        ) : (
+                            <Text style={styles.buttonText}>Acessar</Text>
+                        )}
                     </TouchableOpacity>
                 </View>
             </KeyboardAvoidingView>

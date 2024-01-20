@@ -84,7 +84,7 @@ export default function Order(){
       })
 
       setProducts(response.data);
-      setProductSelected(response.data[0])
+      setProductSelected(response.data[0]);
 
     }
 
@@ -121,21 +121,31 @@ export default function Order(){
 
   // adcionando um produto nessa mesa
   async function handleAdd(){
-    const response = await api.post('/order/add', {
-      order_id: route.params?.order_id,
-      product_id: productSelected?.id,
-      amount: Number(amount)
-    })
+  
 
-    let data = {
-      id: response.data.id,
-      product_id: productSelected?.id as string,
-      name: productSelected?.name as string,
-      amount: amount
+    try {
+        const response = await api.post('/order/add', {
+            order_id: route.params?.order_id,
+            product_id: productSelected?.id,
+            amout: Number(amount)
+          });
+
+          let data = {
+            id: response.data.id,
+            product_id: productSelected?.id as string,
+            name: productSelected?.name as string,
+            amount: amount
+          }
+
+          setItems(oldArray => [...oldArray, data]);
+    } catch (error) {
+        console.log(error);
     }
 
+    
 
-    setItems(oldArray => [...oldArray, data])
+
+    
 
   }
 
